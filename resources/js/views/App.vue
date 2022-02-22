@@ -6,7 +6,7 @@
 import WorkInProgress from '../components/WorkInProgress.vue';
 
     export default {
-        name: 'WorkInProgress',
+        name: 'App',
         components: {
             WorkInProgress
         }
