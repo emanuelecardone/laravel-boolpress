@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
+use App\Category;
 Use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -30,7 +31,9 @@ class PostController extends Controller
     public function create()
     {
         //
-        return view('admin.posts.create');
+        $categories = Category::all();
+
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -49,7 +52,7 @@ class PostController extends Controller
         $new_post = new Post();
         $new_post->fill($form_data);
 
-        $new_post->slug = $this->getUniqueSlugFromTitle($form_data['title']);
+        $new_post->slug = Post::getUniqueSlugFromTitle($form_data['title']);
 
         $new_post->save();
 
@@ -66,6 +69,7 @@ class PostController extends Controller
     {
         //
         $post = Post::findOrFail($id);
+        $category = $post->category;
 
         return view('admin.posts.show', compact('post'));
     }
@@ -80,8 +84,9 @@ class PostController extends Controller
     {
         //
         $post = Post::findOrFail($id);
+        $categories = Category::all();
 
-        return view('admin.posts.edit', compact('post'));
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -126,22 +131,8 @@ class PostController extends Controller
     protected function getValidationRules(){
         return [
             'title' => 'required|max:255',
-            'content' =>'required|max:60000'
+            'content' =>'required|max:60000',
+            'category_id' => 'exists:categories,id|nullable'
         ];
-    }
-
-    protected function getUniqueSlugFromTitle($title){
-        $slug = Str::slug($title);
-        $slug_base = $slug;
-
-        $post_found = Post::where('slug', '=', $slug)->first();
-        $slug_counter = 1;
-        while($post_found) {
-            $slug = $slug_base . '-' . $slug_counter;
-            $post_found = Post::where('slug', '=', $slug)->first();
-            $slug_counter++;
-        }
-
-        return $slug;
     }
 }

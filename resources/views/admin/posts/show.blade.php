@@ -9,6 +9,8 @@
 
                     <h3 class="mb-3 fw-bold">Slug: {{$post->slug}}</h3>
 
+                    <h4>Category: {{$post->category ? $post->category->name : 'No category'}}</h4>
+
                     <p class="fs-3">{{$post->content}}</p>
 
                     <div>
