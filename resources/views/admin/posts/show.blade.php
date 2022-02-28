@@ -11,6 +11,14 @@
 
                     <h4>Category: {{$post->category ? $post->category->name : 'No category'}}</h4>
 
+                    <div class="mb-3">Tags:
+                        @forelse ($post->tags as $tag)
+                            {{ $tag->name }}{{ $loop->last ? '' : ', ' }}
+                        @empty
+                            No tags
+                        @endforelse
+                    </div>
+                    
                     <p class="fs-3">{{$post->content}}</p>
 
                     <div>
