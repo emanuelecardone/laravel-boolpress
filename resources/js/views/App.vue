@@ -1,18 +1,19 @@
 <template>
-    <PostsList />
+    <div class="page_content">
+        <Header />
+
+        <main>
+            <router-view></router-view>
+        </main>
+    </div>
 </template>
 
 <script>
-import PostsList from '../components/PostsList.vue';
-
-    export default {
-        name: 'App',
-        components: {
-            PostsList
-        }
+import Header from '../components/Header.vue';
+export default {
+    name: 'App',
+    components: {
+        Header
     }
+}
 </script>
-
-<style lang="scss" scoped>
-    
-</style>
